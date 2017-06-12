@@ -1,15 +1,19 @@
 #!/usr/bin/env python
-#-*-conding = utf8-*-
+
 """
 K-means算法实现
 """
 import random
+import os
 import matplotlib.pyplot as plt
+
+CLASS_NUM = 3
+class_num = int(os.getenv('CLASS_NUM',CLASS_NUM))
 
 def get_classfication(star_class,data_set):
     classification = {}
     for key in data_set:
-        mindist = 100
+        mindist = 1000000
         for class_key in star_class:
             dist = 0
             for i in range(len(star_class[class_key])):
@@ -62,12 +66,11 @@ if __name__ == '__main__':
     num_id = range(100)
     density = [round(random.uniform(0.2, 0.8), 3) for __ in range(100)]
     sugar_content = [round(random.uniform(0, 0.5), 3) for __ in range(100)]
-    scal = [random.randint(50, 100) for __ in range(30)]
+    weight = [round(random.uniform(10,50), 3) for __ in range(100)]
     data_set = {}
     for i in range(len(num_id)):
-        data_set[i] = [density[i], sugar_content[i]]
+        data_set[i] = [density[i]/max(density), sugar_content[i]/max(sugar_content),weight[i]/max(weight)]
     com_class_fi = []
-    class_num = 3
     star_class = get_random_class(data_set, class_num)
     while True:
         class_fi = get_classfication(star_class,data_set)
@@ -78,12 +81,3 @@ if __name__ == '__main__':
             star_class = cla_means(class_fi,data_set)
             com_class_fi = class_fi
         print(class_fi,star_class)
-
-
-
-
-
-
-
-
-
